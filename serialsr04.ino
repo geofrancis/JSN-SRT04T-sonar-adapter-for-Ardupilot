@@ -10,6 +10,7 @@ SoftwareSerial mySerial(pinRX, pinTX);
 
 unsigned char data_buffer[4] = {0};
 int distances = 0;
+int distance = 0;
 unsigned char CS;
 
 
@@ -39,6 +40,7 @@ void readsonar(){
       // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
         distances = (data_buffer[1] << 8) + data_buffer[2];
+        distance = distances * 0.1;
       }
     }
   }
@@ -64,8 +66,8 @@ void receiveEvent(int howMany) {
 
 void requestEvent() 
 {
-Wire.write (highByte(distances));
-Wire.write (lowByte(distances));
+Wire.write (highByte(distance));
+Wire.write (lowByte(distance));
 }
 
 void setup() {
