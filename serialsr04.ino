@@ -33,8 +33,9 @@ void readsonar(){
       CS = data_buffer[0] + data_buffer[1] + data_buffer[2];
       // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
-        distances = (data_buffer[1] << 8) + data_buffer[2];
-        distance = distances * 0.1;
+        distances = 0.1 * (data_buffer[1] << 8) + data_buffer[2];
+         //adjusting for the speed of sound in water
+        distance = distances * 4.126;
       }
     }
   }
