@@ -3,21 +3,15 @@
 #include <SoftwareSerial.h>
 #define I2C_SLAVE_ADDR  0x70  //Standard MaxsonarI2CXL address
 
-
 int pinRX = 10;
 int pinTX = 11;
 SoftwareSerial mySerial(pinRX, pinTX);
-
 unsigned char data_buffer[4] = {0};
 int distances = 0;
 int distance = 0;
 unsigned char CS;
-
-
 uint8_t Index;
 byte received;
-uint8_t OffSet = 120 ;  //Offset error of the LIDAR
-uint8_t Scaling = 10 ;  //Benewake outputs in mm, we have to scale to cm
 
 
 
