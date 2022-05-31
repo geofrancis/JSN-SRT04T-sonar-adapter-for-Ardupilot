@@ -16,8 +16,8 @@ byte received;
 
 void readsonar(){     
    if (mySerial.available() > 0) {
-    mySerial.write(0xff);
-    delay(4);
+    mySerial.write(0x55);
+    delay(20);
  
     // Check for packet header character 0xff
     if (mySerial.read() == 0xff) {
