@@ -3,9 +3,11 @@
 
 const int numReadings = 10;
 
-#define I2C_ADDR1  0x70  //Standard MaxsonarI2CXL address
-#define I2C_ADDR2  0x71  //Standard MaxsonarI2CXL address
-#define I2C_ADDR3  0x72  //Standard MaxsonarI2CXL address
+
+ //SonarI2C address
+#define I2C_ADDR1  0x70 
+#define I2C_ADDR2  0x71  
+#define I2C_ADDR3  0x72  
 
 SoftwareSerial portOne(10, 11);
 SoftwareSerial portTwo(8, 9);
@@ -50,6 +52,31 @@ int readings3[numReadings];      // the readings from the analog input
 int readIndex3 = 0;              // the index of the current reading
 int total3 = 0;                  // the running total
 int average3 = 0;                // the average
+
+
+
+////////////////////////////////////////////////////////////////////
+void setup() {
+ Serial.begin(9600);
+ portOne.begin(9600);
+ portTwo.begin(9600);
+ Wire.begin(I2C_ADDR1);
+ Wire.begin(I2C_ADDR2);
+ Wire.begin(I2C_ADDR3);
+ Wire.onReceive(receiveEvent); // register event
+ Wire.onRequest(requestEvent);
+ for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+    readings[thisReading] = 0;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
+void loop() {
+  readsonar1();
+  readsonar2();
+  readsonar3();
+
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -278,25 +305,3 @@ Wire.write (lowByte(distance3));
 
 
 
-////////////////////////////////////////////////////////////////////
-void setup() {
- Serial.begin(9600);
- portOne.begin(9600);
- portTwo.begin(9600);
- Wire.begin(I2C_ADDR1);
- Wire.begin(I2C_ADDR2);
- Wire.begin(I2C_ADDR3);
- Wire.onReceive(receiveEvent); // register event
- Wire.onRequest(requestEvent);
- for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-    readings[thisReading] = 0;
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////
-void loop() {
-  readsonar1();
-  readsonar2();
-  readsonar3();
-
-}
