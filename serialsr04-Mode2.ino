@@ -8,12 +8,15 @@ SoftwareSerial mySerial(pinRX, pinTX);
 unsigned char data_buffer[4] = {0};
 int distances = 0;
 int distance = 0;
+int zerocheck = 0;
 unsigned char CS;
 uint8_t Index;
 byte received;
 
 
 const int numReadings = 10;
+
+
 int readings[numReadings];      // the readings from the analog input
 int readIndex = 0;              // the index of the current reading
 int total = 0;                  // the running total
@@ -36,33 +39,46 @@ void readsonar(){
       CS = data_buffer[0] + data_buffer[1] + data_buffer[2];
       // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
-        distances = 0.1 * (data_buffer[1] << 8) + data_buffer[2];
-      
-       // Smoothing
+
+        
+        distances = 0.1 * ((data_buffer[1] << 8) + data_buffer[2]);
+
+
+  }
+  }
+}
          
-       // subtract the last reading:
+
+       // Smoothing
+{
+       // subtract the last reading:       
         total = total - readings[readIndex];
-       // read from the sensor:
-         readings[readIndex] = distances;
+        
+       // read from the sensor:    
+         readings[readIndex] = distances ;
+         
        // add the reading to the total:
          total = total + readings[readIndex];
+         
        // advance to the next position in the array:
         readIndex = readIndex + 1;
+        
        // if we're at the end of the array...
-    if (readIndex >= numReadings) {
-       // ...wrap around to the beginning:
-       readIndex = 0;
-  }
-
+    if (readIndex >= numReadings) 
+    // ...wrap around to the beginning:
+    {readIndex = 0;
+    }
+ 
       // calculate the average:
       average = total / numReadings;
 
-      //ratio for speed of sound in air vs water
-       distance = average * 4.126;
-       }
-    }
-  }
 }
+ 
+      //ratio for speed of sound in air vs water 4.314 for water, 1.0 for use in air
+      
+       distance = average * 4.314 ;
+       
+       }
 
 
 
@@ -89,6 +105,14 @@ Wire.write (highByte(distance));
 Wire.write (lowByte(distance));
 }
 
+void clearbuffer(){ 
+
+     data_buffer[0] = 0;
+     data_buffer[1] = 0;
+     data_buffer[2] = 0;
+
+     }
+
 void setup() {
  Serial.begin(9600);
  mySerial.begin(9600);
@@ -97,7 +121,10 @@ void setup() {
  Wire.onRequest(requestEvent);
 }
 void loop() {
+
   readsonar();
-     Serial.print(average);
-   Serial.println();
+  clearbuffer();
+     
+  
 }
+
