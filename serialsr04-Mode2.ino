@@ -2,7 +2,7 @@
 #include <SoftwareSerial.h>
 #define I2C_SLAVE_ADDR  0x70  //Standard MaxsonarI2CXL address
 
-const int numReadings = 1;
+const int numReadings = 10;
 
 int pinRX = 10;
 int pinTX = 11;
