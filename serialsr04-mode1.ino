@@ -1,4 +1,3 @@
-
 #include <Wire.h>
 #include <SoftwareSerial.h>
 #define I2C_SLAVE_ADDR  0x70  //Standard MaxsonarI2CXL address
@@ -14,12 +13,16 @@ uint8_t Index;
 byte received;
 
 
+const int numReadings = 10;
+int readings[numReadings];      // the readings from the analog input
+int readIndex = 0;              // the index of the current reading
+int total = 0;                  // the running total
+int average = 0;                // the average
+
 
 void readsonar(){     
    if (mySerial.available() > 0) {
- 
-    delay(4);
- 
+    
     // Check for packet header character 0xff
     if (mySerial.read() == 0xff) {
       // Insert header into array
@@ -29,17 +32,38 @@ void readsonar(){
         data_buffer[i] = mySerial.read();
       }
  
-      //Compute checksum
+     //Compute checksum
       CS = data_buffer[0] + data_buffer[1] + data_buffer[2];
       // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
         distances = 0.1 * (data_buffer[1] << 8) + data_buffer[2];
-         //adjusting for the speed of sound in water
-        distance = distances * 4.126;
-      }
+      
+       // Smoothing
+         
+       // subtract the last reading:
+        total = total - readings[readIndex];
+       // read from the sensor:
+         readings[readIndex] = distances;
+       // add the reading to the total:
+         total = total + readings[readIndex];
+       // advance to the next position in the array:
+        readIndex = readIndex + 1;
+       // if we're at the end of the array...
+    if (readIndex >= numReadings) {
+       // ...wrap around to the beginning:
+       readIndex = 0;
+  }
+
+      // calculate the average:
+      average = total / numReadings;
+
+      //ratio for speed of sound in air vs water
+       distance = average * 4.126;
+       }
     }
   }
 }
+
 
 
 
@@ -53,7 +77,7 @@ void receiveEvent(int howMany) {
       received = Wire.read(); 
       if (received == 0x51)
       {
-      //Serial.println(received);        
+// mySerial.write(0x55);
       }
     }
   }
@@ -66,7 +90,7 @@ Wire.write (lowByte(distance));
 }
 
 void setup() {
- Serial.begin(115200);
+ Serial.begin(9600);
  mySerial.begin(9600);
  Wire.begin(I2C_SLAVE_ADDR);
  Wire.onReceive(receiveEvent); // register event
@@ -74,5 +98,6 @@ void setup() {
 }
 void loop() {
   readsonar();
-
+     Serial.print(average);
+   Serial.println();
 }
