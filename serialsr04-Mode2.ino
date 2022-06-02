@@ -124,15 +124,5 @@ void setup() {
 void loop() {
   readsonar();
   clearbuffer();
-     
-        Serial.print(" ");
-     Serial.print(distances);
-
-   
-     Serial.print(" ");
-     Serial.print(distance);
-     Serial.print(" ");
-
-     Serial.println();
 } 
 
