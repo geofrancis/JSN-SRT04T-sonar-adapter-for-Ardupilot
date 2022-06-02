@@ -81,7 +81,7 @@ void receiveEvent(int howMany) {
       }
     }
   }
-}
+} 
 
 void requestEvent() 
 {
