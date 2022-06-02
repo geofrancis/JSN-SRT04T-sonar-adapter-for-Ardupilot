@@ -8,7 +8,6 @@ SoftwareSerial mySerial(pinRX, pinTX);
 unsigned char data_buffer[4] = {0};
 int distances = 0;
 int distance = 0;
-int zerocheck = 0;
 unsigned char CS;
 uint8_t Index;
 byte received;
@@ -25,7 +24,7 @@ int average = 0;                // the average
 
 void readsonar(){     
    if (mySerial.available() > 0) {
-    
+     delay(10);  
     // Check for packet header character 0xff
     if (mySerial.read() == 0xff) {
       // Insert header into array
@@ -93,26 +92,21 @@ void receiveEvent(int howMany) {
       received = Wire.read(); 
       if (received == 0x51)
       {
- mySerial.write(0x55);
+ mySerial.write(0x55); 
       }
     }
   }
 }
 
 void requestEvent() 
-{
+{  
 Wire.write (highByte(distance));
 Wire.write (lowByte(distance));
 }
 
-void clearbuffer(){ 
 
-     data_buffer[0] = 0;
-     data_buffer[1] = 0;
-     data_buffer[2] = 0;
-     data_buffer[3] = 0;
 
-}
+
 
 void setup() {
  Serial.begin(9600);
@@ -123,6 +117,5 @@ void setup() {
 }
 void loop() {
   readsonar();
-  clearbuffer();
-} 
+}
 
