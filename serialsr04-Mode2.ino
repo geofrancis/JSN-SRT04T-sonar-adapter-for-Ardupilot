@@ -16,8 +16,9 @@ byte received;
 
 void readsonar(){     
    if (mySerial.available() > 0) {
+
     mySerial.write(0x55);
-    delay(20);
+    delay(4);
  
     // Check for packet header character 0xff
     if (mySerial.read() == 0xff) {
@@ -52,7 +53,7 @@ void receiveEvent(int howMany) {
       received = Wire.read(); 
       if (received == 0x51)
       {
-      //Serial.println(received);        
+ mySerial.write(0x55);
       }
     }
   }
@@ -65,7 +66,7 @@ Wire.write (lowByte(distance));
 }
 
 void setup() {
- Serial.begin(115200);
+ Serial.begin(9600);
  mySerial.begin(9600);
  Wire.begin(I2C_SLAVE_ADDR);
  Wire.onReceive(receiveEvent); // register event
@@ -73,5 +74,6 @@ void setup() {
 }
 void loop() {
   readsonar();
-
+   Serial.print(distances);
+   Serial.println();
 }
