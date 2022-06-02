@@ -14,7 +14,7 @@ uint8_t Index;
 byte received;
 
 
-const int numReadings = 10;
+const int numReadings = 100;
 
 
 int readings[numReadings];      // the readings from the analog input
@@ -34,16 +34,16 @@ void readsonar(){
       for (int i = 1; i < 4; i++) {
         data_buffer[i] = mySerial.read();
       }
- 
      //Compute checksum
       CS = data_buffer[0] + data_buffer[1] + data_buffer[2];
+
+      
       // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
-
-        
         distances = 0.1 * ((data_buffer[1] << 8) + data_buffer[2]);
-
-
+    
+  } else {
+    (distances = 0);
   }
   }
 }
@@ -110,8 +110,9 @@ void clearbuffer(){
      data_buffer[0] = 0;
      data_buffer[1] = 0;
      data_buffer[2] = 0;
+     data_buffer[3] = 0;
 
-     }
+}
 
 void setup() {
  Serial.begin(9600);
@@ -121,10 +122,17 @@ void setup() {
  Wire.onRequest(requestEvent);
 }
 void loop() {
-
   readsonar();
   clearbuffer();
      
-  
+        Serial.print(" ");
+     Serial.print(distances);
+
+   
+     Serial.print(" ");
+     Serial.print(distance);
+     Serial.print(" ");
+
+     Serial.println();
 }
 
