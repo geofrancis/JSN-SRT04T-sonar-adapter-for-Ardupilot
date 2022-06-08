@@ -1,6 +1,15 @@
 #include <Wire.h>
 #include <SoftwareSerial.h>
-#define I2C_SLAVE_ADDR  0x70  //Standard MaxsonarI2CXL address
+
+//Standard MaxsonarI2CXL address
+#define I2C_SLAVE_ADDR  0x70  
+
+//SONAR MODE, mode 1 reads every 100ms, mode 2 is polled.
+int MODE = 2;
+
+//number of readings to average
+const int numReadings = 10;
+
 
 int pinRX = 10;
 int pinTX = 11;
@@ -11,17 +20,10 @@ int distance = 0;
 unsigned char CS;
 uint8_t Index;
 byte received;
-
-//SONAR MODE
-int MODE = 2;
-
-const int numReadings = 10;
-
-
-int readings[numReadings];      // the readings from the analog input
-int readIndex = 0;              // the index of the current reading
-int total = 0;                  // the running total
-int average = 0;                // the average
+int readings[numReadings]; 
+int readIndex = 0; 
+int total = 0;  
+int average = 0; 
 
 
 void readsonar(){     
@@ -71,13 +73,10 @@ void readsonar(){
     }
 // calculate the average:
       average = total / numReadings;
-}
- 
+} 
 //ratio for speed of sound in air vs water 4.314 for water, 1.0 for use in air
-       distance = average * 4.314 ;
-       
-       }
-
+       distance = average * 4.314 ;    
+}
 //look for i2c read read request
    void receiveEvent(int howMany) {
       while (Wire.available()) { // loop through all but the last
@@ -85,10 +84,7 @@ void readsonar(){
       received = Wire.read(); 
       if (received == 0x51)
       {
-
- //Pings the sonar in mode 2, comment out for mode 1      
-
-
+//Pings the sonar in mode 2    
   if (MODE == 2) {
          mySerial.write(0x55);
     }
