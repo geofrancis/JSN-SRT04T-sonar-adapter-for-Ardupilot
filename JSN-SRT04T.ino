@@ -43,9 +43,9 @@ void readsonar(){
    // If checksum is valid compose distance from data
       if (data_buffer[3] == CS) {
         distances = 0.1 * ((data_buffer[1] << 8) + data_buffer[2]);
-  //range = 0 if checksum fails
+  //range = -1 if checksum fails
        } else {
-       (distances = 0);
+       (distances = -1);
   }
   }
 }
