@@ -2,7 +2,9 @@
 #include <SoftwareSerial.h>
 
 //Standard MaxsonarI2CXL address
-#define I2C_SLAVE_ADDR  0x70  
+#define I2C_SLAVE_ADDR  0x09 
+
+//Use ardupilot rangefinder set to lighware i2c address 9.
 
 //SONAR MODE, mode 1 reads every 100ms, mode 2 is polled.
 int MODE = 2;
