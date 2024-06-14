@@ -3,10 +3,10 @@
 //Standard MaxsonarI2CXL address
 #define I2C_SLAVE_ADDR  0x09 // set 9 in ardupilot
 
-//#define I2C_SLAVE_ADDR  0x112 // set 9 in ardupilot
-//#define I2C_SLAVE_ADDR  0x113 // set 9 in ardupilot
-//define I2C_SLAVE_ADDR  0x114 // set 9 in ardupilot
-//#define I2C_SLAVE_ADDR  0x115 // set 9 in ardupilot
+//#define I2C_SLAVE_ADDR  0x70 // set 112 in ardupilot
+//#define I2C_SLAVE_ADDR  0x71 // set 113 in ardupilot
+//define I2C_SLAVE_ADDR  0x72 // set 114 in ardupilot
+//#define I2C_SLAVE_ADDR  0x73 // set 115 in ardupilot
 
 
 unsigned char data_buffer[4] = {0};
