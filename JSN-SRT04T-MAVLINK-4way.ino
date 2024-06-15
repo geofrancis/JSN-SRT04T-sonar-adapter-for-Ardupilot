@@ -106,7 +106,7 @@ void read_sonar2() {
         Distance2 = (buffer_RTT[1] << 8) + buffer_RTT[2];
         /*< Type from MAV_DISTANCE_SENSOR enum.*/
         uint8_t id = 2;           /*< Onboard ID of the sensor*/
-        uint8_t orientation = 25; /*(0=forward, each increment is 45degrees more in clockwise direction), 24 (upwards) or 25 (downwards)*/
+        uint8_t orientation = sonar2_orientation; /*(0=forward, each increment is 45degrees more in clockwise direction), 24 (upwards) or 25 (downwards)*/
         mavlink_message_t msg;
         uint8_t buf[MAVLINK_MAX_PACKET_LEN];
         mavlink_msg_distance_sensor_pack(sysid, compid, &msg, time_boot_ms, min_distance, max_distance, Distance2, type, id, orientation, covariance, horizontal_fov, vertical_fov, signal_quality, quaternion);
@@ -134,7 +134,7 @@ void read_sonar3() {
         Distance3 = (buffer_RTT[1] << 8) + buffer_RTT[2];
         /*< Type from MAV_DISTANCE_SENSOR enum.*/
         uint8_t id = 3;                           /*< Onboard ID of the sensor*/
-        uint8_t orientation = sonar2_orientation; /*(0=forward, each increment is 45degrees more in clockwise direction), 24 (upwards) or 25 (downwards)*/
+        uint8_t orientation = sonar3_orientation; /*(0=forward, each increment is 45degrees more in clockwise direction), 24 (upwards) or 25 (downwards)*/
         mavlink_message_t msg;
         uint8_t buf[MAVLINK_MAX_PACKET_LEN];
         mavlink_msg_distance_sensor_pack(sysid, compid, &msg, time_boot_ms, min_distance, max_distance, Distance3, type, id, orientation, covariance, horizontal_fov, vertical_fov, signal_quality, quaternion);
