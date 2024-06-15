@@ -8,10 +8,8 @@
 unsigned char buffer_RTT[4] = { 0 };
 uint8_t CS;
 #define COM 0x55
+int sonarserial = 9600;
 
-
-#define JSNSRT04 9600
-//#define GL041MT 115200
 
 #define sonar1_orientation 25
 #define sonar2_orientation 25
@@ -46,10 +44,10 @@ void setup() {
   Serial1.begin(115200);  // 0,1
   //  Serial2.begin(115200);  // 8,9
 
-  sonar1.begin(115200);
-  sonar2.begin(115200);
-  sonar3.begin(115200);
-  sonar4.begin(115200);
+  sonar1.begin(sonarserial);
+  sonar2.begin(sonarserial);
+  sonar3.begin(sonarserial);
+  sonar4.begin(sonarserial);
 }
 
 void loop() {
